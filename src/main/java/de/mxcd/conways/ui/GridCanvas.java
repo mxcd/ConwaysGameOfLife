@@ -4,6 +4,7 @@ import de.mxcd.conways.game.Board;
 import de.mxcd.conways.util.Program;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.input.MouseEvent;
 
 /**
  * Created by Max Partenfelder on 12.01.2016.
@@ -30,6 +31,12 @@ public class GridCanvas extends Canvas implements Grid
 
     public static final int FRAMETIME = 1000 / 60;
 
+    private boolean[][] selectedTiles;
+    // true: from dead to live // false: from alive to dead
+    private boolean markingDirection = true;
+    private boolean firstTileToggled = true;
+    private boolean dragging = false;
+
     public GridCanvas(Board board)
     {
         this.board = board;
@@ -55,10 +62,39 @@ public class GridCanvas extends Canvas implements Grid
 
         Program.INSTANCE.addStepListener(this);
 
-        this.setOnMouseClicked((event)->
+        this.addEventHandler(MouseEvent.MOUSE_PRESSED, event ->
         {
-            clickOn(event.getX(), event.getY());
+            dragStartOrGo(event);
         });
+        this.addEventHandler(MouseEvent.MOUSE_DRAGGED, event ->
+        {
+            dragStartOrGo(event);
+        });
+        this.addEventHandler(MouseEvent.MOUSE_RELEASED, event ->
+        {
+            dragRelease(event);
+        });
+
+        this.selectedTiles = new boolean[this.board.getWidth()][this.board.getHeight()];
+    }
+
+    public void dragStartOrGo(MouseEvent event)
+    {
+        if(!this.dragging)
+        {
+            this.dragging = true;
+            Program.INSTANCE.stopForecastThread();
+            Program.INSTANCE.stopEvolutionThread();
+        }
+        this.clickOn(event.getX(), event.getY());
+    }
+
+    public void dragRelease(MouseEvent event)
+    {
+        this.dragging = false;
+        this.selectedTiles = new boolean[this.board.getWidth()][this.board.getHeight()];
+        this.firstTileToggled = true;
+        Program.INSTANCE.getForecastThread().restart();
     }
 
     public synchronized void stepComplete()
@@ -110,10 +146,19 @@ public class GridCanvas extends Canvas implements Grid
 
         if(xPos > offsetX && yPos > offsetY)
         {
-            board.getCell(x, y).set(!board.getCell(x, y).get());
-            Program.INSTANCE.getForecastThread().restart();
-        }
+            if(!this.selectedTiles[x][y])
+            {
+                this.selectedTiles[x][y] = true;
+                if(this.firstTileToggled)
+                {
+                    this.firstTileToggled = false;
+                    this.markingDirection = !this.board.getCell(x, y).get();
+                }
 
+                if(this.markingDirection == !this.board.getCell(x, y).get())
+                    this.board.getCell(x, y).set(!this.board.getCell(x, y).get());
+            }
+        }
         repaint();
     }
 
