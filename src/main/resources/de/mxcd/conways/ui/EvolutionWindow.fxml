@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<?import java.net.URL?>
+<BorderPane fx:controller="de.mxcd.conways.ui.EvolutionWindow" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <top>
+        <MenuBar BorderPane.alignment="CENTER" fx:id="menuBar">
+            <menus>
+                <Menu text="File">
+                    <items>
+                        <MenuItem text="Load" onAction="#onLoad" />
+                        <MenuItem text="Save" onAction="#onSave" />
+                        <MenuItem text="Close" onAction="#onClose" />
+                    </items>
+                </Menu>
+                <Menu text="Game">
+                    <items>
+                        <MenuItem text="Clear Board" onAction="#onClear" />
+                        <MenuItem text="Reset Game" onAction="#onReset" />
+                        <MenuItem text="Resize" onAction="#onSetBoardSize" />
+                        <MenuItem text="Change Rules" onAction="#onChangeRules" />
+                    </items>
+                </Menu>
+                <Menu text="Help">
+                    <items>
+                        <MenuItem text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <center>
+        <SplitPane BorderPane.alignment="CENTER">
+            <items>
+                <Pane maxWidth="290" minWidth="290">
+                    <children>
+                        <VBox styleClass="controlArea" spacing="10">
+                            <BorderPane styleClass="controlBox">
+                                <top>
+                                    <Text styleClass="controlHeadline">
+                                        Evolution Control
+                                    </Text>
+                                </top>
+                                <left>
+                                    <Button styleClass="greenBtn" text="Start" onAction="#onStart" />
+                                </left>
+                                <right>
+                                    <Button styleClass="redBtn" text="Stop" onAction="#onStop" />
+                                </right>
+                                <center>
+                                    <Text fx:id="stepCounter" styleClass="controlHeadline">0</Text>
+                                </center>
+                            </BorderPane>
+                            <VBox styleClass="controlBox" spacing="5">
+                                <Text styleClass="controlHeadline">
+                                    Speed Control
+                                </Text>
+                                <Slider fx:id="speedSlider"/>
+                                <BorderPane>
+                                    <left>
+                                        <Label text="Slow" />
+                                    </left>
+                                    <right>
+                                        <Label text="Fast" />
+                                    </right>
+                                </BorderPane>
+                            </VBox>
+                            <VBox styleClass="controlBox" spacing="5">
+                                <Text styleClass="controlHeadline">
+                                    Evolution Forecast
+                                </Text>
+                                <HBox styleClass="forecastField">
+                                    <Text fx:id="forecastText" />
+                                    <ImageView fx:id="forecastImage" />
+                                </HBox>
+                            </VBox>
+                        </VBox>
+                    </children>
+                </Pane>
+                <Pane fx:id="gridContainer" />
+            </items>
+        </SplitPane>
+    </center>
+    <stylesheets>
+        <URL value="@conways.css" />
+    </stylesheets>
+</BorderPane>

@@ -1,0 +1,81 @@
+.cellAlive
+{
+    -fx-background-color: #31e322;
+    -fx-font-family: "Arial Black";
+    -fx-text-alignment: center;
+    -fx-background-radius: 0;
+}
+
+.cellDead
+{
+    -fx-background-color: #e7c4b1;
+    -fx-font-family: "Arial Black";
+    -fx-text-alignment: center;
+    -fx-background-radius: 0;
+}
+
+.controlArea
+{
+    -fx-min-width: 270px;
+    -fx-padding: 20px;
+}
+
+.controlBox
+{
+    -fx-border-color: #cdccca;
+    -fx-background-color: #f5f4f2;
+    -fx-max-width: 250px;
+    -fx-padding: 10px;
+}
+
+.buttonBox
+{
+    -fx-min-width: 250px;
+    -fx-padding: 5px;
+}
+
+.forecastField
+{
+    -fx-pref-height: 60px;
+}
+
+.forecastText
+{
+    -fx-wrap-text: true;
+    -fx-max-width: 190px;
+}
+
+.forecastImage
+{
+    -fx-max-width: 50px;
+    -fx-max-height: 50px;
+}
+
+.controlHeadline
+{
+    -fx-text-alignment: center;
+    -fx-font-family: monospace;
+    -fx-font-size: 15px;
+}
+
+.greenBtn
+{
+    -fx-background-color:
+            linear-gradient(#f0ff35, #a9ff00),
+            radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);
+    -fx-background-radius: 6, 5;
+    -fx-background-insets: 0, 1;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );
+    -fx-text-fill: #395306;
+}
+
+.redBtn
+{
+    -fx-background-color:
+            linear-gradient(#ff9b43, #ff3a2e),
+            radial-gradient(center 50% -40%, radius 200%, #eec446 45%, #c8a333 50%);
+    -fx-background-radius: 6, 5;
+    -fx-background-insets: 0, 1;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );
+    -fx-text-fill: #395306;
+}
