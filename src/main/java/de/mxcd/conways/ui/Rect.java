@@ -12,8 +12,8 @@ import javafx.scene.paint.Color;
 public class Rect
 {
     // TODO "Alive color" in different green and dead cell as frame
-    private Color deadColor = Color.web("e7c4b1");
-    private Color aliveColor = Color.web("31e322");
+    private Color deadColor = Color.WHITE;//Color.web("e5e7e7");
+    private Color aliveColor = Color.web("2dd425");
 
     private double width;
     private double height;
@@ -22,6 +22,8 @@ public class Rect
     private int x;
     private int y;
     private boolean alive = false;
+
+    private boolean colorChanged = true;
 
     public Rect(int x, int y)
     {
@@ -35,12 +37,17 @@ public class Rect
      */
     public void paint(GraphicsContext gc)
     {
+        gc.setFill(Color.LIGHTGRAY);
+        gc.fillRect(xPos-1, yPos-1, width+2, height+2);
+
         if(this.alive)
             gc.setFill(aliveColor);
         else
             gc.setFill(deadColor);
 
         gc.fillRect(xPos, yPos, width, height);
+
+        this.colorChanged = false;
     }
 
     // Just some getters and setters
@@ -106,6 +113,12 @@ public class Rect
     public void setAlive(boolean alive)
     {
         this.alive = alive;
+        this.colorChanged = true;
+    }
+
+    public boolean isColorChanged()
+    {
+        return colorChanged;
     }
 
     // I told you so

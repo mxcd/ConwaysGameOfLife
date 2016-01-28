@@ -33,6 +33,7 @@ public enum Program
     private Lock lock = new ReentrantLock(true);
     private List<StepListener> stepListeners= new ArrayList<>();
     private EvolutionWindow evolutionWindow;
+    private Stage splashScreen;
 
     public Stage getMainStage()
     {
@@ -159,5 +160,15 @@ public enum Program
         {
             Program.INSTANCE.getForecastThread().setRunning(false);
         }
+    }
+
+    public Stage getSplashScreen()
+    {
+        return splashScreen;
+    }
+
+    public void setSplashScreen(Stage splashScreen)
+    {
+        this.splashScreen = splashScreen;
     }
 }

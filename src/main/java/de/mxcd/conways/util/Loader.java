@@ -62,6 +62,7 @@ public class Loader
                     Program.INSTANCE.setCurrentResult(gameState.getResult());
                     Program.INSTANCE.setScene(SceneDef.EVOLUTION);
                     Program.INSTANCE.getCurrentBoard().triggerProperties();
+                    Program.INSTANCE.getForecastThread().restart();
 
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setHeaderText("Loading done");

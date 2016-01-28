@@ -240,4 +240,9 @@ public class EvolutionWindow implements Initializable, ForecastListener, StepLis
         Program.INSTANCE.setCurrentRules(new Rules());
         Program.INSTANCE.setScene(SceneDef.EVOLUTION);
     }
+
+    public void onAbout(ActionEvent event)
+    {
+        new AboutDialog().show();
+    }
 }

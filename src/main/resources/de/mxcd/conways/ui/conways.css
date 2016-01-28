@@ -1,6 +1,6 @@
 .cellAlive
 {
-    -fx-background-color: #31e322;
+    -fx-background-color: #2dd425;
     -fx-font-family: "Arial Black";
     -fx-text-alignment: center;
     -fx-background-radius: 0;
@@ -8,7 +8,7 @@
 
 .cellDead
 {
-    -fx-background-color: #e7c4b1;
+    -fx-background-color: #e5e7e7;
     -fx-font-family: "Arial Black";
     -fx-text-alignment: center;
     -fx-background-radius: 0;

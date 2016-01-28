@@ -5,6 +5,7 @@ import de.mxcd.conways.util.Program;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
 /**
  * Created by Max Partenfelder on 12.01.2016.
@@ -31,9 +32,10 @@ public class GridCanvas extends Canvas implements Grid
 
     public static final int FRAMETIME = 1000 / 60;
 
+
+    // Stuff for the drag detection
     private boolean[][] selectedTiles;
-    // true: from dead to live // false: from alive to dead
-    private boolean markingDirection = true;
+    private boolean markingDirection = true; // true: from dead to live // false: from alive to dead
     private boolean firstTileToggled = true;
     private boolean dragging = false;
 
@@ -62,6 +64,11 @@ public class GridCanvas extends Canvas implements Grid
 
         Program.INSTANCE.addStepListener(this);
 
+        // 3 Mouse events for changing the board's cells
+        // Cells can be changed by clicking on a singe one or by dragging over multiple ones
+        // Note that cells are only changing one and only in one direction within a drag
+        // So if you first cross a dead cell, the drag will only change dead cells into living ones,
+        // leaving the living cells untouched
         this.addEventHandler(MouseEvent.MOUSE_PRESSED, event ->
         {
             dragStartOrGo(event);
@@ -78,6 +85,11 @@ public class GridCanvas extends Canvas implements Grid
         this.selectedTiles = new boolean[this.board.getWidth()][this.board.getHeight()];
     }
 
+    /**
+     * Starts a drag sequence
+     * Can be called by MOUSE_DRAGGED for a drag move or by MOUSE_PRESSED for a single click action
+     * @param event
+     */
     public void dragStartOrGo(MouseEvent event)
     {
         if(!this.dragging)
@@ -89,6 +101,10 @@ public class GridCanvas extends Canvas implements Grid
         this.clickOn(event.getX(), event.getY());
     }
 
+    /**
+     * Marks the end of a drag move or click action, resets all required variables and restarts the forecast thread
+     * @param event
+     */
     public void dragRelease(MouseEvent event)
     {
         this.dragging = false;
@@ -165,7 +181,7 @@ public class GridCanvas extends Canvas implements Grid
     /**
      * Repaint of the canvas, that will be triggered every time there is a change in color or size
      */
-    public synchronized void repaint()
+    public synchronized void repaint(boolean onlyColorChanged)
     {
         Platform.runLater(()->
         {
@@ -176,17 +192,26 @@ public class GridCanvas extends Canvas implements Grid
 
                 // Clearing the canvas to avoid errors while resizing
                 this.getGraphicsContext2D().clearRect(0, 0, this.getWidth(), this.getHeight());
+                // Setting a white background
+                this.getGraphicsContext2D().setFill(Color.WHITE);
+                this.getGraphicsContext2D().fillRect(0,0,this.getWidth(), this.getHeight());
                 // Repaint every rect in the rect map
                 for (int x = 0; x < rectArray.length; x++)
                 {
                     for (int y = 0; y < rectArray[x].length; y++)
                     {
                         if(rectArray[x][y] != null)
-                            rectArray[x][y].paint(this.getGraphicsContext2D());
+                            if(rectArray[x][y].isColorChanged() || !onlyColorChanged)
+                                rectArray[x][y].paint(this.getGraphicsContext2D());
                     }
                 }
             }
         });
+    }
+
+    public void repaint()
+    {
+        this.repaint(false);
     }
 
     /**
@@ -228,6 +253,9 @@ public class GridCanvas extends Canvas implements Grid
         rect.setyPos(yPos);
     }
 
+    /**
+     * Recalculates the bounds of a rect when necessary instead of doing it on every single repaint
+     */
     public void sizeChanged()
     {
         this.getGraphicsContext2D().clearRect(0, 0, this.getWidth(), this.getHeight());
