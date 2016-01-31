@@ -81,6 +81,14 @@
                                     <ImageView fx:id="forecastImage" />
                                 </HBox>
                             </VBox>
+                            <VBox styleClass="controlBox" spacing="5">
+                                <Text styleClass="controlHeadline">
+                                    Rules
+                                </Text>
+                                <GridPane fx:id="rulesDisplay" hgap="5" vgap="5">
+
+                                </GridPane>
+                            </VBox>
                         </VBox>
                     </children>
                 </Pane>

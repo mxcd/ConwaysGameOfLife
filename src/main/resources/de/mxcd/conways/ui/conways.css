@@ -98,3 +98,31 @@
     -fx-border-color: #2dd425;
     -fx-border-width: 3px;
 }
+
+.birthIndicator
+{
+    -fx-background-color: #2dd425;
+    -fx-min-width: 10px;
+    -fx-min-height: 15px;
+}
+
+.lifeIndicator
+{
+    -fx-background-color: blanchedalmond;
+    -fx-min-width: 10px;
+    -fx-min-height: 15px;
+}
+
+.deathIndicator
+{
+    -fx-background-color: red;
+    -fx-min-width: 10px;
+    -fx-min-height: 15px;
+}
+
+.neutralIndicator
+{
+    -fx-background-color: lightgrey;
+    -fx-min-width: 10px;
+    -fx-min-height: 15px;
+}

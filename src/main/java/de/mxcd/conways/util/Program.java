@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
@@ -37,6 +38,7 @@ public enum Program
     private Stage splashScreen;
     private int currentEvolutionDelayIndex = 0;
     private WelcomeDialog welcomeDialog;
+    private ArrayList<InputStream> examples = new ArrayList();
 
     public Stage getMainStage()
     {
@@ -193,5 +195,15 @@ public enum Program
     public WelcomeDialog getWelcomeDialog()
     {
         return welcomeDialog;
+    }
+
+    public void addExample(InputStream example)
+    {
+        this.examples.add(example);
+    }
+
+    public ArrayList<InputStream> getExamples()
+    {
+        return this.examples;
     }
 }

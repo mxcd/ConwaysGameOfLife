@@ -11,13 +11,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import javafx.util.Pair;
 
 import java.net.URL;
 import java.util.Optional;
@@ -55,6 +56,8 @@ public class EvolutionWindow implements Initializable, ForecastListener, StepLis
     @FXML
     private MenuBar menuBar;
 
+    @FXML
+    private GridPane rulesDisplay;
 
 
     public void initialize(URL location, ResourceBundle resources)
@@ -111,8 +114,9 @@ public class EvolutionWindow implements Initializable, ForecastListener, StepLis
 
         Program.INSTANCE.addStepListener(this);
 
-
         this.menuBar.getMenus().add(2, ExampleLoader.loadExamples());
+
+        this.updateRulesDisplay();
 
         this.repaint();
     }
@@ -226,6 +230,7 @@ public class EvolutionWindow implements Initializable, ForecastListener, StepLis
             Program.INSTANCE.stopForecastThread();
             Program.INSTANCE.setCurrentRules(newRules.get());
             Program.INSTANCE.getForecastThread().restart();
+            this.updateRulesDisplay();
         }
     }
 
@@ -239,5 +244,60 @@ public class EvolutionWindow implements Initializable, ForecastListener, StepLis
     public void onAbout(ActionEvent event)
     {
         new AboutDialog().show();
+    }
+
+    public void updateRulesDisplay()
+    {
+        rulesDisplay.getChildren().clear();
+        for(int line = 0; line < 4; ++ line)
+        {
+            for (int i = 0; i < 10; ++i)
+            {
+                if(i == 0)
+                {
+                    Text t = new Text();
+                    switch(line)
+                    {
+                        case 1:
+                            t.setText("Birth");
+                            break;
+                        case 2:
+                            t.setText("Life");
+                            break;
+                        case 3:
+                            t.setText("Death");
+                            break;
+                    }
+                    rulesDisplay.add(t, i, line);
+                }
+                else if(line == 0)
+                {
+                    Text t = new Text("" + i);
+                    rulesDisplay.add(t, i, line);
+                }
+                else
+                {
+                    Label rectangle = new Label();
+                    String styleClass = "neutralIndicator";
+                    switch(line)
+                    {
+                        case 1:
+                            if(Program.INSTANCE.getCurrentRules().getFate(i-1) == Rules.Fate.BIRTH)
+                                styleClass = "birthIndicator";
+                            break;
+                        case 2:
+                            if(Program.INSTANCE.getCurrentRules().getFate(i-1) == Rules.Fate.LIFE)
+                                styleClass = "lifeIndicator";
+                            break;
+                        case 3:
+                            if(Program.INSTANCE.getCurrentRules().getFate(i-1) == Rules.Fate.DEATH)
+                                styleClass = "deathIndicator";
+                            break;
+                    }
+                    rectangle.getStyleClass().add(styleClass);
+                    rulesDisplay.add(rectangle, i, line);
+                }
+            }
+        }
     }
 }

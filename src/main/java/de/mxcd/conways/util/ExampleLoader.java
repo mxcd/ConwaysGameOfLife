@@ -7,6 +7,7 @@ import javafx.scene.control.MenuItem;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created by Max Partenfelder on 27.01.2016.
@@ -63,6 +64,7 @@ public class ExampleLoader
         }
         MenuItem item = new MenuItem(path[path.length-1].split(".cws")[0]);
         submenu.getItems().add(item);
+        Program.INSTANCE.addExample(App.class.getResourceAsStream(line));
         item.setOnAction(event ->
         {
             Loader.loadFile(App.class.getResourceAsStream(line));
@@ -74,6 +76,8 @@ public class ExampleLoader
      */
     public static void loadEOTD()
     {
-
+        Random generator = new Random();
+        int exampleIndex = (int) (generator.nextDouble() * (Program.INSTANCE.getExamples().size()-1));
+        Loader.loadFile(Program.INSTANCE.getExamples().get(exampleIndex));
     }
 }
