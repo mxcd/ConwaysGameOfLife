@@ -1,10 +1,12 @@
 package de.mxcd.conways.util;
 
+import de.mxcd.conways.App;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 
-import java.io.File;
-import java.net.URL;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 
 /**
  * Created by Max Partenfelder on 27.01.2016.
@@ -13,53 +15,65 @@ public class ExampleLoader
 {
     public static Menu loadExamples()
     {
-        File exampleRoot = null;
-
+        Menu menu = new Menu("Examples");
+        HashMap<String, Menu> menuMap = new HashMap<>();
         try
         {
-            // Load the directory as a resource
-            URL url = ClassLoader.getSystemResource("de/mxcd/conways/Examples");
-            // Turn the resource into a File object
-            exampleRoot = new File(url.toURI());
+            BufferedInputStream inputStream = new BufferedInputStream(ExampleLoader.class.getResourceAsStream("examples.txt"));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+
+            String line;
+            do
+            {
+               line = reader.readLine();
+                if(line != null)
+                    addMenu(line, menu, menuMap);
+            }
+            while(line != null);
         }
-        catch (Exception e)
+        catch (FileNotFoundException e)
         {
-//            System.out.println("Examples root load exception");
             e.printStackTrace();
         }
-        Menu menu = loadDirectory(exampleRoot);
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
         return menu;
     }
 
-    public static Menu loadDirectory(File directory)
+    private static void addMenu(String line, Menu menu, HashMap<String, Menu> menuMap)
     {
-//        System.out.println(directory);
-        Menu menu = new Menu(directory.getName());
-
-        File[] files = directory.listFiles();
-        for(int i = 0; i < files.length; ++i)
+        String[] path = line.split("/");
+        Menu submenu = menu;
+        for(int i = 1; i < path.length -1; ++i)
         {
-            if(files[i].isDirectory())
+            if(menuMap.containsKey(path[i]))
             {
-                menu.getItems().add(loadDirectory(files[i]));
+                submenu = menuMap.get(path[i]);
+            }
+            else
+            {
+                Menu m = new Menu(path[i]);
+                submenu.getItems().add(m);
+                menuMap.put(path[i], m);
+                submenu = m;
             }
         }
-
-        for(int i = 0; i < files.length; ++i)
+        MenuItem item = new MenuItem(path[path.length-1].split(".cws")[0]);
+        submenu.getItems().add(item);
+        item.setOnAction(event ->
         {
-            if(files[i].isFile())
-            {
-//                System.out.println(files[i]);
-                File file = files[i];
-                MenuItem item = new MenuItem(files[i].getName());
-                item.setOnAction(event ->
-                {
-                    Loader.loadFile(file);
-                });
+            Loader.loadFile(App.class.getResourceAsStream(line));
+        });
+    }
 
-                menu.getItems().add(item);
-            }
-        }
-        return menu;
+    /**
+     * Load Example of the day
+     */
+    public static void loadEOTD()
+    {
+
     }
 }

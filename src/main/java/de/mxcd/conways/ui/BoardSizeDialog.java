@@ -1,5 +1,8 @@
 package de.mxcd.conways.ui;
 
+import de.mxcd.conways.game.Board;
+import de.mxcd.conways.util.Program;
+import de.mxcd.conways.util.SceneDef;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
 import javafx.scene.control.ButtonType;
@@ -10,6 +13,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
+
+import java.util.Optional;
 
 /**
  * Created by Max Partenfelder on 27.01.2016.
@@ -30,6 +35,22 @@ public class BoardSizeDialog extends Dialog<Pair<Integer, Integer>>
     public static final int WARNING_THRESHOLD = 200;
     private boolean warningDisplayed = false;
     private Text warningText;
+
+    public static void showDialog()
+    {
+        Optional<Pair<Integer, Integer>> result = new BoardSizeDialog(Program.INSTANCE.getCurrentBoard().getWidth(), Program.INSTANCE.getCurrentBoard().getHeight()).showAndWait();
+        if(result.isPresent())
+        {
+            int width = result.get().getKey();
+            int height = result.get().getValue();
+
+            Board b = new Board(width, height);
+            Program.INSTANCE.stopEvolutionThread();
+            Program.INSTANCE.stopForecastThread();
+            Program.INSTANCE.setCurrentBoard(b);
+            Program.INSTANCE.setScene(SceneDef.EVOLUTION);
+        }
+    }
 
     public BoardSizeDialog(int currentWidth, int currentHeight)
     {

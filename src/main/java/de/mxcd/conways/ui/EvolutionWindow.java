@@ -59,7 +59,6 @@ public class EvolutionWindow implements Initializable, ForecastListener, StepLis
 
     public void initialize(URL location, ResourceBundle resources)
     {
-        System.out.println("init start");
         Program.INSTANCE.setEvolutionWindow(this);
         this.board = Program.INSTANCE.getCurrentBoard();
 
@@ -215,18 +214,7 @@ public class EvolutionWindow implements Initializable, ForecastListener, StepLis
     @FXML
     public void onSetBoardSize()
     {
-        Optional<Pair<Integer, Integer>> result = new BoardSizeDialog(this.board.getWidth(), this.board.getHeight()).showAndWait();
-        if(result.isPresent())
-        {
-            int width = result.get().getKey();
-            int height = result.get().getValue();
-
-            Board b = new Board(width, height);
-            Program.INSTANCE.stopEvolutionThread();
-            Program.INSTANCE.stopForecastThread();
-            Program.INSTANCE.setCurrentBoard(b);
-            Program.INSTANCE.setScene(SceneDef.EVOLUTION);
-        }
+        BoardSizeDialog.showDialog();
     }
 
     public void onChangeRules()

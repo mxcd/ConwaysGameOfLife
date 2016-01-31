@@ -5,6 +5,7 @@ import de.mxcd.conways.game.EvolutionThread;
 import de.mxcd.conways.game.ForecastThread;
 import de.mxcd.conways.game.Rules;
 import de.mxcd.conways.ui.EvolutionWindow;
+import de.mxcd.conways.ui.WelcomeDialog;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -35,6 +36,7 @@ public enum Program
     private EvolutionWindow evolutionWindow;
     private Stage splashScreen;
     private int currentEvolutionDelayIndex = 0;
+    private WelcomeDialog welcomeDialog;
 
     public Stage getMainStage()
     {
@@ -181,5 +183,15 @@ public enum Program
     public void setCurrentEvolutionDelayIndex(int currentEvolutionDelayIndex)
     {
         this.currentEvolutionDelayIndex = currentEvolutionDelayIndex;
+    }
+
+    public void setWelcomeDialog(WelcomeDialog welcomeDialog)
+    {
+        this.welcomeDialog = welcomeDialog;
+    }
+
+    public WelcomeDialog getWelcomeDialog()
+    {
+        return welcomeDialog;
     }
 }
