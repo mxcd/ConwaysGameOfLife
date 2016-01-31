@@ -38,8 +38,11 @@ public class EvolutionWindow implements Initializable, ForecastListener, StepLis
 
     @FXML
     private Pane gridContainer;
+
     @FXML
     private Slider speedSlider;
+    @FXML
+    private Text speedText;
 
     @FXML
     private Text forecastText;
@@ -53,8 +56,10 @@ public class EvolutionWindow implements Initializable, ForecastListener, StepLis
     private MenuBar menuBar;
 
 
+
     public void initialize(URL location, ResourceBundle resources)
     {
+        System.out.println("init start");
         Program.INSTANCE.setEvolutionWindow(this);
         this.board = Program.INSTANCE.getCurrentBoard();
 
@@ -81,14 +86,15 @@ public class EvolutionWindow implements Initializable, ForecastListener, StepLis
             grid.repaint();
         }));
 
-        speedSlider.setMax(EvolutionThread.MAX_DELAY);
-        speedSlider.setMin(EvolutionThread.MIN_DELAY);
-        speedSlider.setValue(EvolutionThread.MAX_DELAY/2);
+        speedSlider.setMin(0);
+        speedSlider.setMax(EvolutionThread.DELAYS.length-1);
+        speedSlider.setValue(Program.INSTANCE.getCurrentEvolutionDelayIndex());
         speedSlider.valueProperty().addListener((observable, oldValue, newValue) ->
         {
             if(Program.INSTANCE.getEvolutionThread() != null)
             {
-                Program.INSTANCE.getEvolutionThread().setDelay(1 + EvolutionThread.MAX_DELAY - newValue.intValue());
+                Program.INSTANCE.setCurrentEvolutionDelayIndex(newValue.intValue());
+                this.speedText.setText((1000.0d / EvolutionThread.DELAYS[newValue.intValue()]) + " EPS");
             }
         });
 
@@ -105,6 +111,7 @@ public class EvolutionWindow implements Initializable, ForecastListener, StepLis
         }));
 
         Program.INSTANCE.addStepListener(this);
+
 
         this.menuBar.getMenus().add(2, ExampleLoader.loadExamples());
 

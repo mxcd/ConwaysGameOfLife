@@ -34,6 +34,7 @@ public enum Program
     private List<StepListener> stepListeners= new ArrayList<>();
     private EvolutionWindow evolutionWindow;
     private Stage splashScreen;
+    private int currentEvolutionDelayIndex = 0;
 
     public Stage getMainStage()
     {
@@ -170,5 +171,15 @@ public enum Program
     public void setSplashScreen(Stage splashScreen)
     {
         this.splashScreen = splashScreen;
+    }
+
+    public int getCurrentEvolutionDelayIndex()
+    {
+        return currentEvolutionDelayIndex;
+    }
+
+    public void setCurrentEvolutionDelayIndex(int currentEvolutionDelayIndex)
+    {
+        this.currentEvolutionDelayIndex = currentEvolutionDelayIndex;
     }
 }

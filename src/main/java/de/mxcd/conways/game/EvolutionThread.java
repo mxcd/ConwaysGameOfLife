@@ -11,11 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class EvolutionThread extends Thread
 {
     private Lock lock = new ReentrantLock();
-
-    public static final int MAX_DELAY = 2000;
-    public static final int MIN_DELAY = 1;
-
-    private int delay = MAX_DELAY/2;
+    public static final int[] DELAYS = {2000, 1000, 500, 250, 125, 100, 50, 20, 10, 5, 4, 2, 1};
     private boolean running = true;
 
 
@@ -36,29 +32,13 @@ public class EvolutionThread extends Thread
 
             try
             {
-                Thread.sleep(this.getDelay());
+                Thread.sleep(DELAYS[Program.INSTANCE.getCurrentEvolutionDelayIndex()]);
             }
             catch (InterruptedException e)
             {
                 e.printStackTrace();
             }
         }
-    }
-
-    public int getDelay()
-    {
-        int result = 0;
-        lock.lock();
-        result = delay;
-        lock.unlock();
-        return result;
-    }
-
-    public void setDelay(int delay)
-    {
-        lock.lock();
-        this.delay = delay;
-        lock.unlock();
     }
 
     public boolean isRunning()

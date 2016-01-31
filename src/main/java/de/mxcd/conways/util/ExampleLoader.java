@@ -1,11 +1,10 @@
 package de.mxcd.conways.util;
 
-import de.mxcd.conways.App;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 
 import java.io.File;
-import java.net.URISyntaxException;
+import java.net.URL;
 
 /**
  * Created by Max Partenfelder on 27.01.2016.
@@ -15,12 +14,17 @@ public class ExampleLoader
     public static Menu loadExamples()
     {
         File exampleRoot = null;
+
         try
         {
-            exampleRoot = new File(App.class.getResource("Examples").toURI());
+            // Load the directory as a resource
+            URL url = ClassLoader.getSystemResource("de/mxcd/conways/Examples");
+            // Turn the resource into a File object
+            exampleRoot = new File(url.toURI());
         }
-        catch (URISyntaxException e)
+        catch (Exception e)
         {
+//            System.out.println("Examples root load exception");
             e.printStackTrace();
         }
         Menu menu = loadDirectory(exampleRoot);
@@ -29,6 +33,7 @@ public class ExampleLoader
 
     public static Menu loadDirectory(File directory)
     {
+//        System.out.println(directory);
         Menu menu = new Menu(directory.getName());
 
         File[] files = directory.listFiles();
@@ -44,6 +49,7 @@ public class ExampleLoader
         {
             if(files[i].isFile())
             {
+//                System.out.println(files[i]);
                 File file = files[i];
                 MenuItem item = new MenuItem(files[i].getName());
                 item.setOnAction(event ->

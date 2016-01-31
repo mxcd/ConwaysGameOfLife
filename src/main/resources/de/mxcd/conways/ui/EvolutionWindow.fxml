@@ -64,6 +64,9 @@
                                     <left>
                                         <Label text="Slow" />
                                     </left>
+                                    <center>
+                                        <Text fx:id="speedText">0.5 EPS</Text>
+                                    </center>
                                     <right>
                                         <Label text="Fast" />
                                     </right>

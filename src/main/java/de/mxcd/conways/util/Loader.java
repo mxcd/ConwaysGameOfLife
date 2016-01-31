@@ -18,13 +18,6 @@ public class Loader
 {
     public static void loadFileDialog()
     {
-        // Stopping the evolution thread to make sure no changes are being made on the board during the loading process
-        if (Program.INSTANCE.getEvolutionThread() != null)
-        {
-            Program.INSTANCE.getEvolutionThread().setRunning(false);
-            Program.INSTANCE.setEvolutionThread(null);
-        }
-
         // Select file to load from
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open game");
@@ -35,6 +28,13 @@ public class Loader
 
     public static void loadFile(File file)
     {
+        // Stopping the evolution thread to make sure no changes are being made on the board during the loading process
+        if (Program.INSTANCE.getEvolutionThread() != null)
+        {
+            Program.INSTANCE.getEvolutionThread().setRunning(false);
+            Program.INSTANCE.setEvolutionThread(null);
+        }
+        
         if (file != null && file.exists())
         {
             try
